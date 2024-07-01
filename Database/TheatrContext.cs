@@ -18,24 +18,31 @@ public class Scene {
     public DateTime DateCreate { get; set; }
     public string Name { get; set; }
     public string Data { get; set; }
+
+    public virtual ICollection<Spectacle> Spectacle { get; set; }
 }
 
 public class Spectacle {
     [Key]
     public int Id { get; set; }
     public DateTime DateCreate { get; set; }
-    public int SceneId { get; set; } 
+    [ForeignKey("Scene")]
+    public int SceneId { get; set; }
     public string Name { get; set; }
     public string Desc { get; set; }
     public DateTime DatePublic { get; set; }
 
     public virtual Scene Scene { get; set; }
+
+    public virtual ICollection<Ticket> Ticket { get; set; }
 }
 
 public class Ticket {
     [Key]
     public int Id { get; set; }
+    [ForeignKey("Spectacle")]
     public int SpectacleId { get; set; }
+    [ForeignKey("Transaction")]
     public string TransactionId { get; set; }
     public DateTime DateCreate { get; set; }
     public string Seat { get; set; }
@@ -46,7 +53,9 @@ public class Ticket {
 
 public class Transaction {
     [Key]
-    public string OrderId { get; set; } // UUID or int
+    public Guid OrderId { get; set; }
     public decimal Amount { get; set; }
     public string Status { get; set; }
+
+    public virtual ICollection<Ticket> Ticket { get; set; }
 }
